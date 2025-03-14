@@ -1,6 +1,13 @@
 # Un archivo que contiene todas las acciones que un usiario puede realizar
 from models import Usuario
 
+from extensions import jwt
+from flask_jwt_extended import create_access_token
+
+#DATETIME nos permite trabajar con fechas y horas
+#Timedelta realiza la conversion de dias, horas, minutos, etc a formato Linux
+from datetime import timedelta
+
 #Metodo para que el usuario pueda crear una cuenta
 def crear_cuenta(nombre, correo, password):
 
@@ -24,6 +31,7 @@ def crear_cuenta(nombre, correo, password):
 
 def iniciar_sesion(correo, password):
 
+
     #VAriable que contenga usuarios filtrados por un parametro
     usuarios_existentes = Usuario.query.filter_by(email = correo).first()
 
@@ -37,6 +45,26 @@ def iniciar_sesion(correo, password):
         return{'status': 'error', 'error': 'La cuenta no existe'}
 
     #Si la contraseña del formulario esta en la db 
-    
     if usuarios_existentes.verificar_password(password_plano = password):
-        pass
+        
+        #Variable de caducidad del token
+        caducidad = timedelta(minutes=3)
+
+        print('Inico de sesion exitoso :)')
+        token_de_acceso = create_access_token(identity=usuarios_existentes.name, expires_delta=caducidad)
+        print(token_de_acceso)
+        return {'status': 'ok', 'token': token_de_acceso}
+
+    # Usuario existente y contraseña incorrecta
+    else:
+        print('Contraseña incorrecta')
+        return {'status': 'error', 'error': 'Contraseña incorrecta'}
+        
+def encontrar_todos_los_usuarios():
+
+    #Variable que contendra la respuesta de la db
+    usuarios = Usuario.query.all()
+
+    print(usuarios)
+
+    return usuarios

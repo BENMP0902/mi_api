@@ -9,7 +9,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background: linear-gradient(to right, #6200ea, #9c27b0);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -19,20 +19,22 @@
         .signup-container {
             background: white;
             padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
             width: 100%;
             max-width: 400px;
+            text-align: center;
         }
 
         .signup-container h2 {
-            text-align: center;
+            color: #6200ea;
+            font-size: 24px;
             margin-bottom: 20px;
-            color: #333;
         }
 
         .form-group {
             margin-bottom: 15px;
+            text-align: left;
         }
 
         .form-group label {
@@ -44,30 +46,44 @@
 
         .form-group input {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 8px;
             font-size: 16px;
+            transition: 0.3s;
         }
 
         .form-group input:focus {
             border-color: #6200ea;
             outline: none;
+            box-shadow: 0 0 8px rgba(98, 0, 234, 0.3);
         }
 
         .submit-btn {
             width: 100%;
-            padding: 10px;
-            background-color: #6200ea;
+            padding: 12px;
+            background: #6200ea;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             font-size: 16px;
             cursor: pointer;
+            transition: 0.3s;
         }
 
         .submit-btn:hover {
-            background-color: #4500b5;
+            background: #4500b5;
+            box-shadow: 0 4px 8px rgba(98, 0, 234, 0.3);
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 15px;
+            padding: 10px;
+            background: #ffebee;
+            border: 1px solid #d32f2f;
+            border-radius: 8px;
+            text-align: center;
         }
     </style>
 </head>
@@ -89,6 +105,12 @@
             </div>
             <button type="submit" class="submit-btn">Registrarse</button>
         </form>
+
+        {% if estado %}
+        <div class="error-message">
+            <strong>Error:</strong> El correo ya está registrado.
+        </div>
+        {% endif %}
     </div>
 </body>
 </html>
