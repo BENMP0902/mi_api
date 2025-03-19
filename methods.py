@@ -51,7 +51,12 @@ def iniciar_sesion(correo, password):
         caducidad = timedelta(minutes=3)
 
         print('Inico de sesion exitoso :)')
-        token_de_acceso = create_access_token(identity=usuarios_existentes.name, expires_delta=caducidad)
+        token_de_acceso = create_access_token(
+            identity=usuarios_existentes.name, 
+            expires_delta=caducidad,
+            #Se agrega al payload el id del usuario
+            additional_claims={'user_id': usuarios_existentes.id})
+        
         print(token_de_acceso)
         return {'status': 'ok', 'token': token_de_acceso}
 
@@ -68,3 +73,13 @@ def encontrar_todos_los_usuarios():
     print(usuarios)
 
     return usuarios
+    #Busqueda de usuario en la db
+    
+def encontrar_usuario_id(user_id):
+
+    #Variable que contendra la respuesta de la db
+    usuario = Usuario.query.filter_by(id=user_id).first()
+
+    if usuario == None:
+        return {'status': 'error', 'error': 'El usuario no existe'}
+    return usuario
